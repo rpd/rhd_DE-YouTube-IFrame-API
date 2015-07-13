@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>YouTube IFrame API basic custom controls.</title>
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<style>
+  html {
+	font-family: verdana, georgia, helvetica, sans-serif;
+	font-size: 10pt;
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	text-align: justify;
+	padding-left: 8%;
+	padding-right: 8%;
+	padding-bottom: 5%;
+	padding-top: 2%;
+}
+
+body a{
+	color: #2580a2;
+	text-decoration: none;
+}
+pre.code
+{
+	background-color:lightblue;
+	font-family:courier, serif;
+	font-size:15px;
+	font-style:normal;
+	margin:10px;
+	padding:0px
+}  
+    h3{
+	color:silver;  
+	  
+  }
+  #playercontrols{
+width:650px;	  
+  }
+#slider { margin: 10px;width:250px;float:right; }  
+#slider2{
+	width:150px;
+}
+.my.ui-state-default{
+	background-color:blue;
+}
+#slider4{
+	width:150px;
+}
+#buttons{
+	float:left;
+	width:250px;
+}
+#seconddiv{
+	margin:60px;
+}
+.ui-slider-horizontal .ui-state-default {background-image: url("rpdUIiconsignal.png"); no-repeat scroll 50% 50%;}
+  </style> 
+  
+</head>	
+<body>
+	  <div id="firstdiv">
+	  <h2>rhd_DE YouTube IFrame API_Example.</h2>
+	  
+	  <p>The YouTube IFrame API can be loaded and used in 2 different ways.</p>
+	  <ul><li>1.Programmatically using JavaScript</li>
+	  <li>2. With a direct IFrame embed.</li>
+	  </ul>
+	  <p>The following examples show some basic player controls with varying styling. </p>
+	  <h5>YouTube IFrame API example 1  (using JavaScript).</h5>
+	  
+	  <p>This example is based on the one from the YouTube IFrame API web site.  </p>
+	  <p>FRI 10.07.2015 I finally get the custom controls coded so the work (the
+	  volume slider was the hardest to code..This is based on jemiloll YouTube-Audio-Player GitHub code).</p>
+	  
+	  <p>See the blog post @ rhd_Digital Enterprises<a href="http://de.richard-dickinson.com/2015/07/11/webdev-and-youtube-api/" target="_blank"> rhd_Digital Enterprises webdev-and-youtube-api</a></p>
+	  <br>
+    <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
+    <div id="player"></div>
+    <div id ="playercontrols">
+    <div id="buttons">
+    <button type=button label="start" onclick="player.playVideo();">start</button>
+    <button type=button label="stop" onclick="player.stopVideo();">stop</button>
+    <button type=button label="mute" onclick="player.mute();">mute</button>
+    <button type=button label="unmute" onclick="player.unMute();">unmute</button>
+</div>
+
+<div id="slider" style="width:250px;" onload="player.setVolume(document.getElementById('volume').value)" onchange="player.setVolume(document.getElementById('volume').value)"></div><br />
+
+</div>
+
+<script>
+	
+$( "#slider" ).slider({
+              orientation: "horizontal",
+              range: "min",
+              min: 0,
+              max: 100,
+              value: 50,
+              slide: function( event, ui ) {
+                $( "#volume" ).val( ui.value );
+                player.setVolume(ui.value);
+              }
+            });
+        
+          $('#slider').find(".ui-slider-range").css('width', current_volume+'%');
+          // call the function every 250 milisecond.
+          setInterval(displTime,250);  // PUT THIS STATEMENT JUST AFTER THE PLAYER HAS BEEN CREATED. 
+        
+</script>
+    <script>
+      // 2. This code loads the IFrame Player API code asynchronously.
+      var tag = document.createElement('script');
+
+      tag.src = "https://www.youtube.com/iframe_api";
+      var firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+      // 3. This function creates an <iframe> (and YouTube player)
+      //    after the API code downloads.
+      var player;
+      var current_volume = player.getVolume();
+      function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+          height: '390',
+          width: '640',
+          videoId: 'ab0TSkLe-E0',          //'M7lc1UVf-VE', Google Dev video starts @ timestamp 8;26 min
+          playerVars: { 'autoplay': 1, 'controls': 0 },
+          events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
+          }
+        });
+      }
+
+      // 4. The API will call this function when the video player is ready.
+      function onPlayerReady(event) {
+        event.target.playVideo();
+        
+          }
+
+      // 5. The API calls this function when the player's state changes.
+      
+     
+      function onPlayerStateChange(event) {
+       
+            }
+        
+      function stopVideo() {
+        player.stopVideo();
+      }
+    </script>
+    </div>
+  
+  </body>
+  </html>
